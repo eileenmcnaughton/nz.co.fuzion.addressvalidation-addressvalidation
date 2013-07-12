@@ -7,6 +7,7 @@ require_once 'addressvalidation.civix.php';
  */
 function addressvalidation_civicrm_config(&$config) {
   _addressvalidation_civix_civicrm_config($config);
+  $config->geocodeMethod = 'CRM_Addressvalidation_Utils_Geocode_Google';
 }
 
 /**

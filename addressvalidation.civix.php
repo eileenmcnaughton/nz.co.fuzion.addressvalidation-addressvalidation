@@ -44,6 +44,7 @@ function _addressvalidation_civix_civicrm_install() {
   if ($upgrader = _addressvalidation_civix_upgrader()) {
     return $upgrader->onInstall();
   }
+  civicrm_api('setting', 'fill', array('version' => 3));
 }
 
 /**
@@ -211,5 +212,28 @@ function _addressvalidation_civix_insert_navigation_menu(&$menu, $path, $item, $
       }
     }
     return $found;
+  }
+}
+
+
+/**
+ * Implementation of hook_civicrm_alterSettingsFolders
+ */
+function addressvalidation_civicrm_alterSettingsFolders(&$metaDataFolders = NULL){
+  _addressvalidation_civix_civicrm_alterSettingsFolders($metaDataFolders);
+}
+
+/**
+ * (Delegated) Implementation of hook_civicrm_alterSettingsMetaData
+ */
+function _addressvalidation_civix_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
+  static $configured = FALSE;
+  if ($configured) return;
+  $configured = TRUE;
+
+  $extRoot = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
+  $extDir = $extRoot . 'settings';
+  if(!in_array($extDir, $metaDataFolders)){
+    $metaDataFolders[] = $extDir;
   }
 }
